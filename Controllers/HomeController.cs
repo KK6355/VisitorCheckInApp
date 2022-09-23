@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 using VisitorCheckInApp.Data;
 using VisitorCheckInApp.Models;
+using System.Linq;
 
 namespace VisitorCheckInApp.Controllers
 {
@@ -29,8 +30,10 @@ namespace VisitorCheckInApp.Controllers
             ViewData["StaffId"] = new SelectList(_context.Staff, "Id", "StaffName");
             Visitors visitor = new Visitors();
             visitor.CheckIn = DateTime.Now;
+            
+            //show checked in visitors 
+            ViewBag.CurrentVisitor = _context.Visitors.OrderByDescending(x => x.CheckIn).Where(y => y.CheckOut == null).ToList();
             return View(visitor);
-           
         }
 
         public IActionResult Privacy()
@@ -68,5 +71,18 @@ namespace VisitorCheckInApp.Controllers
             ViewData["StaffId"] = new SelectList(_context.Staff, "Id", "Id", visitors.StaffId);
             return View(visitors);
         }
+        [Route("/Home/CheckOut", Name = "CheckOut")]
+        public async Task<IActionResult> CheckOut(Guid id)
+        {
+            var visitor = await _context.Visitors.FindAsync(id);
+            visitor.CheckOut = DateTime.Now;
+            _context.Update(visitor);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+        
+        
     }
 }
+//_context.Visitors.OrderByDescending(x => x.CheckIn).Where(y => y.CheckOut == null).ToListAsync()

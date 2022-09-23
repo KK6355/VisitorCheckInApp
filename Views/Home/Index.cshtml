@@ -1,56 +1,71 @@
 ﻿@model VisitorCheckInApp.Models.Visitors
-@{
-    ViewData["Title"] = "Home Page";
-}
-<div class="row">
-    <div class="text-center">
-        <h1 class="display-4">Welcome To ABC Company</h1>
-        <p>Please Read C&T and Check In!</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business" class="control-label"></label>
-                <input asp-for="Business" class="form-control" />
-                <span asp-validation-for="Business" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CheckIn" class="control-label"></label>
-                <input asp-for="CheckIn" class="form-control" />
-                <span asp-validation-for="CheckIn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CheckOut" class="control-label"></label>
-                <input asp-for="CheckOut" class="form-control" />
-                <span asp-validation-for="CheckOut" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StaffId" class="control-label"></label>
-                <select asp-for="StaffId" class="form-control form-select-sm form-select " asp-items="ViewBag.StaffId"></select>
-            </div>
-            <div class="form-group mt-2">
-                <input type="submit" value="Check In" class="btn btn-success" />
-            </div>
-        </form>
-    </div>
+   
 
-</div>
+        @{
+            ViewData["Title"] = "Home Page";
+        }
+        <div class="row">
+            <br>
+            <div class="text-center">
+                <h1 class="display-4">Welcome To ABC Company</h1>
+                <br>
+                <h6>Please Read T&C and Check In!</h6>
+                <br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Business" class="control-label"></label>
+                        <input asp-for="Business" class="form-control" />
+                        <span asp-validation-for="Business" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CheckIn" class="control-label"></label>
+                        <input asp-for="CheckIn" class="form-control" />
+                        <span asp-validation-for="CheckIn" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CheckOut" class="control-label"></label>
+                        <input asp-for="CheckOut" class="form-control" />
+                        <span asp-validation-for="CheckOut" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="StaffId" class="control-label"></label>
+                        <select asp-for="StaffId" class="form-control form-select-sm form-select " asp-items="ViewBag.StaffId"></select>
+                    </div>
+                    <div class="form-group mt-2">
+                        <input type="submit" value="Check In" class="btn btn-success" />
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h3>Current Visitors</h3>
+                <br>
+                <ul>
+                    @foreach (var visitor in (IEnumerable<Visitors>)ViewBag.CurrentVisitor)
+                    {
+                        <li>@visitor.FirstName @visitor.LastName is visiting @visitor.Staff.StaffName  <a asp-route="CheckOut" asp-route-id="@visitor.Id" class="btn btn-primary" type="button">Check Out</a></li><br>
+                    }
+                </ul>
+            </div>
+
+        </div>
 
 
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
